@@ -2,7 +2,7 @@ const areaSimbolos = document.getElementById("area-simbolos");
 const pontosEl = document.getElementById("pontos");
 const mensagemEl = document.getElementById("mensagem");
 
-let pontos = Number(localStorage.getItem("pontosRaspadinha")) || 50; // começa com 50 pontos
+let pontos = Number(localStorage.getItem("pontosRaspadinha")) || 50;
 let temaAtual = "classico";
 let simbolosAtuais = [];
 let raspados = 0;
@@ -13,38 +13,44 @@ function atualizarPontos() {
     pontosEl.innerText = pontos;
     localStorage.setItem("pontosRaspadinha", pontos);
 
-    if (pontos >= 80) document.getElementById("btn-praia").disabled = false;
-    if (pontos >= 150) document.getElementById("btn-natal").disabled = false;
+    const btnPraia = document.getElementById("btn-praia");
+    const btnNatal = document.getElementById("btn-natal");
+
+    if (btnPraia) btnPraia.disabled = pontos < 80;
+    if (btnNatal) btnNatal.disabled = pontos < 150;
 }
 
 function escolherTema(tema) {
-    if (event.target.disabled) return;
+    const botao = event.target;
+    if (botao.disabled) return;
+
     temaAtual = tema;
     document.querySelectorAll(".tema-btn").forEach(btn => btn.classList.remove("ativo"));
-    event.target.classList.add("ativo");
-    novaRaspadinha(true); // true = não gasta pontos
+    botao.classList.add("ativo");
+    novaRaspadinha(true);
 }
 
 function gerarSimbolos() {
-    // Garante que tenha chance de ter 3 iguais
     const base = simbolosPossiveis[Math.floor(Math.random() * simbolosPossiveis.length)];
     let lista = [base, base, base];
 
-    // Completa com 2 símbolos aleatórios
     while (lista.length < 5) {
         const s = simbolosPossiveis[Math.floor(Math.random() * simbolosPossiveis.length)];
         lista.push(s);
     }
 
     // Embaralha
-    lista = lista.sort(() => Math.random() - 0.5);
+    for (let i = lista.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [lista[i], lista[j]] = [lista[j], lista[i]];
+    }
     return lista;
 }
 
 function novaRaspadinha(gratis = false) {
     if (!gratis) {
         if (pontos < 10) {
-            mensagemEl.innerText = "Pontos insuficientes! Continue jogando para acumular.";
+            mensagemEl.innerText = "Pontos insuficientes!";
             mensagemEl.style.color = "#b91c1c";
             return;
         }
@@ -59,14 +65,16 @@ function novaRaspadinha(gratis = false) {
 
     simbolosAtuais.forEach((simbolo, index) => {
         const div = document.createElement("div");
-        div.classList.add("simbolo");
+        div.className = "simbolo";
         div.innerHTML = `<span>${simbolo}</span>`;
-        div.onclick = () => raspar(div, index);
+        div.onclick = function() {
+            raspar(this);
+        };
         areaSimbolos.appendChild(div);
     });
 }
 
-function raspar(elemento, index) {
+function raspar(elemento) {
     if (elemento.classList.contains("raspado")) return;
 
     elemento.classList.add("raspado");
@@ -94,10 +102,10 @@ function verificarPremio() {
     if (ganhou) {
         pontos += 30;
         atualizarPontos();
-        mensagemEl.innerText = "🎉 Parabéns! Você encontrou 3 iguais e ganhou 30 pontos!";
+        mensagemEl.innerText = "🎉 Parabéns! 3 iguais! Você ganhou 30 pontos!";
         mensagemEl.style.color = "#166534";
     } else {
-        mensagemEl.innerText = "Não foi dessa vez... Tente outra raspadinha!";
+        mensagemEl.innerText = "Não foi dessa vez... Tente outra!";
         mensagemEl.style.color = "#b91c1c";
     }
 }
