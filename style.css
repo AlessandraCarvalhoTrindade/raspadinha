@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: #92400e;
+    margin-bottom: 8px;
+    font-size: 1.6rem;
+}
+
+.pontos {
+    font-size: 1.1rem;
+    color: #78350f;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.temas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tema-btn {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.tema-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+}
+
+.tema-btn.ativo {
+    background: #b45309;
+    transform: scale(1.05);
+}
+
+.raspadinha-container {
+    position: relative;
+    width: 320px;
+    height: 180px;
+    margin: 0 auto 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    cursor: crosshair;
+    border-radius: 12px;
+}
+
+.premio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #78350f;
+    background: #fef3c7;
+    z-index: 1;
+    padding: 15px;
+    text-align: center;
+}
+
+.instrucao {
+    color: #92400e;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.btn-nova {
+    background: #ea580c;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-nova:hover {
+    background: #c2410c;
+}
