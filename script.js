@@ -15,7 +15,6 @@ function jogar() {
   atualizarPontos();
   document.getElementById("msg").innerText = "";
 
-  // Gera 5 símbolos (com chance de ter 3 iguais)
   let lista = [];
   const principal = simbolos[Math.floor(Math.random() * simbolos.length)];
   lista.push(principal, principal, principal);
@@ -24,7 +23,6 @@ function jogar() {
     lista.push(simbolos[Math.floor(Math.random() * simbolos.length)]);
   }
 
-  // Embaralha
   lista = lista.sort(() => Math.random() - 0.5);
 
   const area = document.getElementById("area");
@@ -68,6 +66,5 @@ function verificar(lista) {
   }
 }
 
-// Começa com uma raspadinha
 atualizarPontos();
 jogar();
