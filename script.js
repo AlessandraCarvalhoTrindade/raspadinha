@@ -15,15 +15,12 @@ function jogar() {
   atualizarPontos();
   document.getElementById("msg").innerText = "";
 
+  // Gera 5 símbolos totalmente aleatórios (sorte real)
   let lista = [];
-  const principal = simbolos[Math.floor(Math.random() * simbolos.length)];
-  lista.push(principal, principal, principal);
-
-  while (lista.length < 5) {
-    lista.push(simbolos[Math.floor(Math.random() * simbolos.length)]);
+  for (let i = 0; i < 5; i++) {
+    const aleatorio = simbolos[Math.floor(Math.random() * simbolos.length)];
+    lista.push(aleatorio);
   }
-
-  lista = lista.sort(() => Math.random() - 0.5);
 
   const area = document.getElementById("area");
   area.innerHTML = "";
@@ -54,7 +51,10 @@ function verificar(lista) {
 
   let ganhou = false;
   for (let s in contagem) {
-    if (contagem[s] >= 3) ganhou = true;
+    if (contagem[s] >= 3) {
+      ganhou = true;
+      break;
+    }
   }
 
   if (ganhou) {
@@ -62,7 +62,7 @@ function verificar(lista) {
     atualizarPontos();
     document.getElementById("msg").innerText = "🎉 Você ganhou 30 pontos!";
   } else {
-    document.getElementById("msg").innerText = "Não foi dessa vez...";
+    document.getElementById("msg").innerText = "Não foi dessa vez... Tente outra!";
   }
 }
 
