@@ -1,125 +1,107 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const premioEl = document.getElementById("premio");
+const areaSimbolos = document.getElementById("area-simbolos");
 const pontosEl = document.getElementById("pontos");
+const mensagemEl = document.getElementById("mensagem");
 
-let isDrawing = false;
-let pontos = Number(localStorage.getItem("pontosRaspadinha")) || 0;
+let pontos = Number(localStorage.getItem("pontosRaspadinha")) || 50; // começa com 50 pontos
 let temaAtual = "classico";
-let raspadinhaCompleta = false;
+let simbolosAtuais = [];
+let raspados = 0;
 
-const premios = [
-    "1 milhão em felicidade ✨",
-    "Um dia de folga imaginário 🛋️",
-    "Café infinito por 1 semana ☕",
-    "Sorte no Pix 💸",
-    "Direito de não responder mensagens por 24h 📵",
-    "Abraço virtual apertado 🤗",
-    "Uma pizza grátis no mundo da imaginação 🍕",
-    "Passe livre para ser preguiçosa hoje 😌",
-    "3 desejos (válidos só na fantasia) 🧞",
-    "Uma viagem dos sonhos (mentais) ✈️"
-];
+const simbolosPossiveis = ["🐞", "🍀", "🧲", "⭐", "🔔"];
 
-const coresTema = {
-    classico: "#a16207",
-    praia: "#0ea5e9",
-    natal: "#dc2626",
-    flores: "#db2777"
-};
-
-// Atualiza pontos na tela e desbloqueios
 function atualizarPontos() {
     pontosEl.innerText = pontos;
     localStorage.setItem("pontosRaspadinha", pontos);
 
-    if (pontos >= 50) document.getElementById("btn-praia").disabled = false;
-    if (pontos >= 100) document.getElementById("btn-natal").disabled = false;
-    if (pontos >= 150) document.getElementById("btn-flores").disabled = false;
+    if (pontos >= 80) document.getElementById("btn-praia").disabled = false;
+    if (pontos >= 150) document.getElementById("btn-natal").disabled = false;
 }
 
 function escolherTema(tema) {
+    if (event.target.disabled) return;
     temaAtual = tema;
     document.querySelectorAll(".tema-btn").forEach(btn => btn.classList.remove("ativo"));
     event.target.classList.add("ativo");
-    novaRaspadinha();
+    novaRaspadinha(true); // true = não gasta pontos
 }
 
-function novaRaspadinha() {
-    raspadinhaCompleta = false;
-    const premio = premios[Math.floor(Math.random() * premios.length)];
-    premioEl.innerText = premio;
+function gerarSimbolos() {
+    // Garante que tenha chance de ter 3 iguais
+    const base = simbolosPossiveis[Math.floor(Math.random() * simbolosPossiveis.length)];
+    let lista = [base, base, base];
 
-    // Preenche o canvas com a cor do tema (camada de raspar)
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = coresTema[temaAtual];
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Completa com 2 símbolos aleatórios
+    while (lista.length < 5) {
+        const s = simbolosPossiveis[Math.floor(Math.random() * simbolosPossiveis.length)];
+        lista.push(s);
+    }
 
-    // Texto "RASPE AQUI"
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
-    ctx.font = "bold 22px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("RASPE AQUI", canvas.width / 2, canvas.height / 2);
+    // Embaralha
+    lista = lista.sort(() => Math.random() - 0.5);
+    return lista;
 }
 
-function getPosicao(e) {
-    const rect = canvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {
-        x: clientX - rect.left,
-        y: clientY - rect.top
-    };
-}
-
-function startDrawing(e) {
-    isDrawing = true;
-    draw(e);
-}
-
-function stopDrawing() {
-    isDrawing = false;
-
-    // Verifica se raspou o suficiente
-    if (!raspadinhaCompleta) {
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        let transparent = 0;
-        for (let i = 3; i < imageData.data.length; i += 4) {
-            if (imageData.data[i] === 0) transparent++;
+function novaRaspadinha(gratis = false) {
+    if (!gratis) {
+        if (pontos < 10) {
+            mensagemEl.innerText = "Pontos insuficientes! Continue jogando para acumular.";
+            mensagemEl.style.color = "#b91c1c";
+            return;
         }
-        const percentual = transparent / (canvas.width * canvas.height);
+        pontos -= 10;
+        atualizarPontos();
+    }
 
-        if (percentual > 0.45) {
-            raspadinhaCompleta = true;
-            pontos += 10;
-            atualizarPontos();
-            // Limpa o resto do canvas para revelar tudo
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+    areaSimbolos.innerHTML = "";
+    simbolosAtuais = gerarSimbolos();
+    raspados = 0;
+    mensagemEl.innerText = "";
+
+    simbolosAtuais.forEach((simbolo, index) => {
+        const div = document.createElement("div");
+        div.classList.add("simbolo");
+        div.innerHTML = `<span>${simbolo}</span>`;
+        div.onclick = () => raspar(div, index);
+        areaSimbolos.appendChild(div);
+    });
+}
+
+function raspar(elemento, index) {
+    if (elemento.classList.contains("raspado")) return;
+
+    elemento.classList.add("raspado");
+    raspados++;
+
+    if (raspados === 5) {
+        verificarPremio();
     }
 }
 
-function draw(e) {
-    if (!isDrawing) return;
-    e.preventDefault();
+function verificarPremio() {
+    const contagem = {};
+    simbolosAtuais.forEach(s => {
+        contagem[s] = (contagem[s] || 0) + 1;
+    });
 
-    const pos = getPosicao(e);
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.beginPath();
-    ctx.arc(pos.x, pos.y, 18, 0, Math.PI * 2);
-    ctx.fill();
+    let ganhou = false;
+    for (let s in contagem) {
+        if (contagem[s] >= 3) {
+            ganhou = true;
+            break;
+        }
+    }
+
+    if (ganhou) {
+        pontos += 30;
+        atualizarPontos();
+        mensagemEl.innerText = "🎉 Parabéns! Você encontrou 3 iguais e ganhou 30 pontos!";
+        mensagemEl.style.color = "#166534";
+    } else {
+        mensagemEl.innerText = "Não foi dessa vez... Tente outra raspadinha!";
+        mensagemEl.style.color = "#b91c1c";
+    }
 }
 
-// Eventos mouse
-canvas.addEventListener("mousedown", startDrawing);
-canvas.addEventListener("mouseup", stopDrawing);
-canvas.addEventListener("mousemove", draw);
-
-// Eventos touch (celular)
-canvas.addEventListener("touchstart", startDrawing);
-canvas.addEventListener("touchend", stopDrawing);
-canvas.addEventListener("touchmove", draw);
-
-// Inicia
+// Inicia o jogo
 atualizarPontos();
-novaRaspadinha();
+novaRaspadinha(true);
