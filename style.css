@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    background: #fef2f2;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -15,43 +15,39 @@ body {
 }
 
 .container {
-    background: white;
-    padding: 30px 20px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 400px;
+    max-width: 380px;
     width: 100%;
     text-align: center;
 }
 
 h1 {
-    color: #92400e;
-    margin-bottom: 8px;
-    font-size: 1.6rem;
+    color: #b91c1c;
+    margin-bottom: 6px;
+    font-size: 1.7rem;
 }
 
 .pontos {
-    font-size: 1.1rem;
-    color: #78350f;
-    margin-bottom: 20px;
-    font-weight: 600;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #7f1d1d;
+    margin-bottom: 18px;
 }
 
 .temas {
     display: flex;
-    flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .tema-btn {
-    background: #f59e0b;
+    background: #dc2626;
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 8px 14px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     cursor: pointer;
 }
 
@@ -61,64 +57,100 @@ h1 {
 }
 
 .tema-btn.ativo {
-    background: #b45309;
+    background: #991b1b;
     transform: scale(1.05);
 }
 
-.raspadinha-container {
-    position: relative;
-    width: 320px;
-    height: 180px;
-    margin: 0 auto 15px;
+.card {
+    background: #dc2626;
     border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-#canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    cursor: crosshair;
-    border-radius: 12px;
-}
-
-.premio {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #78350f;
-    background: #fef3c7;
-    z-index: 1;
     padding: 15px;
-    text-align: center;
-}
-
-.instrucao {
-    color: #92400e;
-    font-size: 0.9rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     margin-bottom: 20px;
 }
 
+.header-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.valor {
+    background: #fbbf24;
+    color: #78350f;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.area-simbolos {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    background: #fef08a;
+    padding: 15px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.simbolo {
+    width: 54px;
+    height: 54px;
+    background: #a16207;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.simbolo.raspado {
+    background: white;
+}
+
+.simbolo span {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.simbolo.raspado span {
+    opacity: 1;
+}
+
+.instrucao {
+    color: white;
+    font-size: 0.85rem;
+    margin-top: 8px;
+}
+
 .btn-nova {
-    background: #ea580c;
+    background: #b91c1c;
     color: white;
     border: none;
-    padding: 12px 28px;
+    padding: 14px 28px;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
+    width: 100%;
 }
 
 .btn-nova:hover {
-    background: #c2410c;
+    background: #991b1b;
+}
+
+.mensagem {
+    margin-top: 15px;
+    font-weight: 600;
+    min-height: 24px;
+    color: #166534;
 }
