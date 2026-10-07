@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspadinha da Sorte</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Raspadinha da Sorte</h1>
+        <p class="pontos">Seus pontos: <span id="pontos">0</span></p>
+
+        <div class="temas">
+            <button onclick="escolherTema('classico')" class="tema-btn ativo">Clássico</button>
+            <button onclick="escolherTema('praia')" class="tema-btn" id="btn-praia" disabled>Praia (50 pts)</button>
+            <button onclick="escolherTema('natal')" class="tema-btn" id="btn-natal" disabled>Natal (100 pts)</button>
+            <button onclick="escolherTema('flores')" class="tema-btn" id="btn-flores" disabled>Flores (150 pts)</button>
+        </div>
+
+        <div class="raspadinha-container">
+            <canvas id="canvas" width="320" height="180"></canvas>
+            <div id="premio" class="premio"></div>
+        </div>
+
+        <p class="instrucao">Raspe com o mouse ou o dedo para revelar o prêmio!</p>
+
+        <button onclick="novaRaspadinha()" class="btn-nova">Nova Raspadinha</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
