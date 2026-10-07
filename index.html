@@ -1,39 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raspadinha da Sorte</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raspadinha da Sorte</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Raspadinha da Sorte</h1>
-        <p class="pontos">Seus pontos: <span id="pontos">0</span></p>
+  <div class="container">
+    <h1>Raspadinha da Sorte</h1>
+    <p>Pontos: <span id="pontos">50</span></p>
 
-        <div class="temas">
-            <button onclick="escolherTema('classico')" class="tema-btn ativo">Clássico</button>
-            <button onclick="escolherTema('praia')" class="tema-btn" id="btn-praia" disabled>Praia (80 pts)</button>
-            <button onclick="escolherTema('natal')" class="tema-btn" id="btn-natal" disabled>Natal (150 pts)</button>
-        </div>
+    <div id="area" class="area"></div>
 
-        <div class="card">
-            <div class="header-card">
-                <span>BOA SORTE!</span>
-                <span class="valor">R$ 5</span>
-            </div>
+    <p id="msg"></p>
 
-            <div class="area-simbolos" id="area-simbolos">
-                <!-- Os 5 símbolos serão gerados pelo JavaScript -->
-            </div>
+    <button onclick="jogar()">Nova Raspadinha (10 pts)</button>
+  </div>
 
-            <p class="instrucao">Raspe os 5 símbolos. Encontre 3 iguais e ganhe pontos!</p>
-        </div>
-
-        <button onclick="novaRaspadinha()" class="btn-nova">Nova Raspadinha (10 pts)</button>
-        <p id="mensagem" class="mensagem"></p>
-    </div>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
